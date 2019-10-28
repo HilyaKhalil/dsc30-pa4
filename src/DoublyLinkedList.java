@@ -1,5 +1,7 @@
-name: Hilya Khalil
-PID: A15646071
+/*
+ * name: Hilya Khalil
+ * pid: A15646071
+ */
 
 import java.util.AbstractList;
 
@@ -100,11 +102,12 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
          * @return predecessor node
          */
         public Node getPrev() {
-             return prev;
+
+            return prev;
         }
 
         /**
-         * Remove this node from the list. 
+         * Remove this node from the list.
          * Update previous and next nodes
          */
         public void remove() {
@@ -139,15 +142,17 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     @Override
     public boolean add(T element) throws NullPointerException {
+
         if (element == null) {
             throw new NullPointerException();
         }
 
         Node n = new Node(element, tail, tail.getPrev());
-        tail.setNext(n);
+        tail.setPrev(n);
         //head.setPrev(n);
         tail.getPrev().setNext(n);
         //implementation of adding the new data
+        nelems++;
         return true;
     }
 
@@ -172,8 +177,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
         Node n = getNth(index);
         Node a = new Node(element, n, n.getPrev());
-        n.setNext(a);
         n.getPrev().setNext(a);
+        n.setPrev(a);
         nelems ++;
 
         //implementation of adding the new data
@@ -186,7 +191,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     public void clear() {
 
         head.setNext(tail);
-        tail.setNext(head);
+        tail.setPrev(head);
         nelems = 0;
 
     }
@@ -256,9 +261,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     @Override
     public boolean isEmpty() {
 
-        if (nelems == 0) {
-        }
-        return true;
+        return nelems == 0;
     }
 
     /**
@@ -269,12 +272,14 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     @Override
     public T remove(int index) throws IndexOutOfBoundsException {
 
-        Node n = getNth(index);
-        T data = n.getElement();
-
         if (index >= size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+
+
+        Node n = getNth(index);
+        T data = n.getElement();
+
 
         n.getNext().setNext(n.getPrev());
         n.getPrev().setNext(n.getNext());
@@ -321,9 +326,11 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      * TODO: javadoc comments
      */
     public void splice(int index, DoublyLinkedList<T> otherList) throws IndexOutOfBoundsException {
-        //TODO: Determine if index is valid
 
-        //TODO: Splicing implementation. HINT: remember DoublyLinkedList's  have dummy nodes
+        if (index >= size() || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+
     }
 
     /**
@@ -347,6 +354,3 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     }
 
 }
-
-
-
