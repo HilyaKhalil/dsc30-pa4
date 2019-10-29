@@ -106,17 +106,18 @@ public class DoublyLinkedListTest {
 
     @Test
     public void get() {
+
         assertEquals("Value 1 is at index 0", (Integer) 1, firstList.get(0));
-        assertEquals("Value 2 is at index 2", (Integer) 2, firstList.get(1));
         assertEquals("Value 3 is at index 3", (Integer) 3, firstList.get(2));
+        assertEquals("Value 2 is at index 2", (Integer) 2, firstList.get(1));
     }
 
     @Test (expected = IndexOutOfBoundsException.class)
     public void testIndexOutOfBoundsExceptionInGet() {
 
+        assertEquals("Value 3 is at index 3", (Integer) 3, firstList.get(4));
         assertEquals("Value 1 is at index 0", (Integer) 1, firstList.get(0));
         assertEquals("Value 2 is at index 2", (Integer) 2, firstList.get(-1));
-        assertEquals("Value 3 is at index 3", (Integer) 3, firstList.get(4));
     }
 
     @Test
@@ -176,14 +177,16 @@ public class DoublyLinkedListTest {
 
     @Test
     public void size() {
-        assertEquals(3, firstList.size());
+
         assertEquals(0, emptyList.size());
+        assertEquals(3, firstList.size());
         assertTrue(emptyList.add(2));
         assertEquals(1, emptyList.size());
     }
 
     @Test
     public void spliceMid() {
+
         thirdList.splice(0, fourthList);
         assertEquals("Four", thirdList.get(0));
         assertEquals("One", thirdList.get(3));
@@ -197,6 +200,7 @@ public class DoublyLinkedListTest {
 
     @Test
     public void spliceEnd() {
+
         thirdList.splice(3, fourthList);
         assertEquals("Six", thirdList.get(5));
         assertEquals("Four", thirdList.get(3));
@@ -218,8 +222,8 @@ public class DoublyLinkedListTest {
         subSeq.add("One"); subSeq.add("Two"); subSeq.add("Three");
         int[] indices = {0, 3};
         int[] matchIndices = thirdList.match(subSeq);
-        assertEquals(indices[0], matchIndices[0]);
         assertEquals(indices[1], matchIndices[1]);
+        assertEquals(indices[0], matchIndices[0]);
         assertEquals(2, matchIndices.length);
 
     }
