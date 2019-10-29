@@ -57,19 +57,23 @@ public class CRISPR {
 
 
         int[] multInx = genome.match(guideRNA);
-        boolean overlap = false;
+        boolean overlapping = false;
 
         for (int i = 0; i < multInx.length - 1; i++) {
-            overlap = multInx[i+1] - multInx[i] < guideRNA.size();
+            overlapping = multInx[i+1] - multInx[i] < guideRNA.size();
         }
-        if (!overlap) {
+
+        if (!overlapping) {
+
             for (int i = 0; i < multInx.length; i++) {
                 DoublyLinkedList<Character> splicedList = new DoublyLinkedList<>();
                 populateFromDNA(splicedList, splicedSequence);
                 int index = multInx[i] + guideRNA.size();
+
                 for (int j = i; j < multInx.length; j++) {
                     multInx[j] += splicedList.size();
                 }
+
                 genome.splice(index, splicedList);
             }
         }
@@ -99,8 +103,10 @@ public class CRISPR {
      * @param rnaString RNA string encoding
      */
     public static void populateDNAFromRNA(DoublyLinkedList<Character> dnaList, String rnaString) {
-            char[] rnaChars = rnaString.toCharArray();
-            for (char c : rnaChars) {
+
+        char[] rnaChars = rnaString.toCharArray();
+
+        for (char c : rnaChars) {
                 switch (c){
                     case 'A': {
                         dnaList.add((Character) 'T');

@@ -127,10 +127,12 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
         head = new Node(null);
         tail = new Node(null);
+
         head.setNext(tail);
         head.setPrev(null);
         tail.setNext(null);
         tail.setPrev(head);
+
         nelems = 0;
 
     }
@@ -149,10 +151,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             throw new NullPointerException();
         }
 
-        Node n = new Node(element, tail, tail.getPrev());
-        tail.getPrev().setNext(n);
-        tail.setPrev(n);
-        //head.setPrev(n);
+        Node a = new Node(element, tail, tail.getPrev());
+        tail.getPrev().setNext(a);
+        tail.setPrev(a);
+        //head.setPrev(a);
 
         //implementation of adding the new data
         nelems++;
@@ -178,10 +180,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             throw new IndexOutOfBoundsException();
         }
 
-        Node n = getNth(index);
-        Node a = new Node(element, n, n.getPrev());
-        n.getPrev().setNext(a);
-        n.setPrev(a);
+        Node a = getNth(index);
+        Node b = new Node(element, a, a.getPrev());
+        a.getPrev().setNext(b);
+        a.setPrev(b);
         nelems ++;
 
         //implementation of adding the new data
@@ -208,18 +210,18 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     public boolean contains(Object element) {
 
         T data = (T)element;
-        Node n = head;
+        Node a = head;
 
         if (element == null) {
             throw new NullPointerException();
         }
 
         for (int i = 0; i <= nelems; i++) {
-            n = n.getNext();
-            if (n == tail || n.getElement() == null) {
+            a = a.getNext();
+            if (a == tail || a.getElement() == null) {
                 return false;
             }
-            if (n.getElement().equals(data)) {
+            if (a.getElement().equals(data)) {
                 return true;
             }
         }
@@ -238,6 +240,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index >= size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+
         return getNth(index).getElement();
 
     }
@@ -249,11 +252,11 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     private Node getNth(int index) {
 
-        Node n = head;
+        Node a = head;
         for (int i = 0; i <= index; i++) {
-            n = n.getNext();
+            a = a.getNext();
         }
-        return n;
+        return a;
     }
 
     /**
@@ -264,7 +267,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     @Override
     public boolean isEmpty() {
 
-        return nelems == 0;
+        if (nelems == 0) {
+            return true;
+        }
+           return false;
     }
 
     /**
@@ -280,13 +286,13 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         }
 
 
-        Node n = getNth(index);
-        T data = n.getElement();
+        Node a = getNth(index);
+        T data = a.getElement();
 
 
-        n.getNext().setNext(n.getPrev());
-        n.getPrev().setNext(n.getNext());
-        n.remove();
+        a.getNext().setNext(a.getPrev());
+        a.getPrev().setNext(a.getNext());
+        a.remove();
         nelems--;
         return data;
     }
@@ -303,14 +309,15 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index >= size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+
         if (element == null) {
             throw new NullPointerException();
         }
 
-        Node n = getNth(index);
-        T a = n.getElement();
-        n.setElement(element);
-        return a;
+        Node a = getNth(index);
+        T b = a.getElement();
+        a.setElement(element);
+        return b;
     }
 
     /**
@@ -320,6 +327,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     @Override
     public int size() {
+
         return nelems;
     }
 
@@ -333,18 +341,22 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index > size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+
         if (otherList.isEmpty()) {
             return;
         }
 
-        Node n = getNth(index);
-        Node a = n.getPrev();
         Node h = otherList.head.getNext();
         Node t = otherList.tail.getPrev();
-        h.setPrev(a);
-        t.setNext(n);
-        a.setNext(h);
-        n.setPrev(t);
+        Node a = getNth(index);
+        Node b = a.getPrev();
+
+
+        h.setPrev(b);
+        t.setNext(a);
+        a.setPrev(t);
+        b.setNext(h);
+
         nelems += otherList.size();
 
     }
@@ -364,34 +376,41 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         }
 
         if (subsequence.size() > 0) {
-            Node h = head;
+            Node a = head;
             for (int i = 0; i < size(); i++) {
-                if (h == null) {
+                if (a == null) {
                     break;
                 }
-                h = h.getNext();
-                Node next = h;
+
+                a = a.getNext();
+                Node next = a;
+
                 for (int j = 0; j < subsequence.size(); j++) {
                     if (next == null) {
                         break;
                     }
-                    T elem = next.getElement();
+
+                    T el = next.getElement();
                     T subElem = subsequence.get(j);
-                    if (elem == null) {
+                    if (el == null) {
                         break;
+
                     }
-                    if (elem.equals(subElem)) {
+                    if (el.equals(subElem)) {
                         if (j == subsequence.size() -1) {
                             indices.add(i);
 
                         }
                         next = next.getNext();
-                    } else {
+                    }
+                    else {
                         break;
                     }
                 }
             }
+
         } else {
+
             for (int i = 0; i < size(); i++) {
                 indices.add(i);
             }
