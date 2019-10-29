@@ -148,9 +148,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         }
 
         Node n = new Node(element, tail, tail.getPrev());
+        tail.getPrev().setNext(n);
         tail.setPrev(n);
         //head.setPrev(n);
-        tail.getPrev().setNext(n);
+
         //implementation of adding the new data
         nelems++;
         return true;
@@ -167,12 +168,12 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     public void add(int index, T element)
             throws IndexOutOfBoundsException, NullPointerException {
 
-        if (index >= size() || index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-
         if (element == null) {
             throw new NullPointerException();
+        }
+
+        if (index >= size() || index < 0) {
+            throw new IndexOutOfBoundsException();
         }
 
         Node n = getNth(index);
@@ -330,6 +331,18 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index >= size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+        if (otherList.isEmpty()) {
+            return;
+        }
+
+        Node n = getNth(index);
+        Node a = n.getPrev();
+        a.setNext(otherList.head.getNext());
+        n.setPrev(otherList.tail.getPrev());
+        otherList.tail.getPrev().setNext(n);
+        otherList.head.getNext().setPrev(a);
+
+        nelems += otherList.size();
 
     }
 
@@ -343,7 +356,44 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         //A list to hold all the starting indices found
         DoublyLinkedList<Integer> indices = new DoublyLinkedList<>();
 
-        //TODO: Add implementation to find the starting indices
+        if (size() <= 0) {
+            return new int[0];
+        }
+
+        if (subsequence.size() > 0) {
+            Node h = head;
+            for (int i = 0; i < size(); i++) {
+                if (h == null) {
+                    break;
+                }
+                h = h.getNext();
+                Node next = h;
+                for (int j = 0; j < subsequence.size(); j++) {
+                    if (next == null) {
+                        break;
+                    }
+                    T elem = next.getElement();
+                    T subElem = subsequence.get(j);
+                    if (elem == null) {
+                        break;
+                    }
+                    if (elem.equals(subElem)) {
+                        if (j == subsequence.size() -1) {
+                            indices.add(i);
+
+                        }
+                        next = next.getNext();
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < size(); i++) {
+                indices.add(i);
+            }
+        }
+
 
         // Array Conversion
         int[] startingIndices = new int[indices.size()];

@@ -1,14 +1,13 @@
 /*
- * NAME: TODO First Last
- * PID: TODO Axxxxxxxx
+ * name: Hilya Khalil
+ * pid: A15646071
  */
-
 
 /**
  * Gene Splicing CRISPR Simulator
  *
- * @author TODO
- * @since TODO
+ * @author Hilya Khalil
+ * @since 10/29/19
  */
 public class CRISPR {
 
