@@ -30,6 +30,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         private Node(T element) {
 
             data = element;
+
         }
 
         /**
@@ -44,6 +45,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             data = element;
             next = nextNode;
             prev = prevNode;
+            
         }
 
         /**
@@ -328,7 +330,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     public void splice(int index, DoublyLinkedList<T> otherList) throws IndexOutOfBoundsException {
 
-        if (index >= size() || index < 0) {
+        if (index > size() || index < 0) {
             throw new IndexOutOfBoundsException();
         }
         if (otherList.isEmpty()) {
@@ -337,11 +339,12 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
         Node n = getNth(index);
         Node a = n.getPrev();
-        a.setNext(otherList.head.getNext());
-        n.setPrev(otherList.tail.getPrev());
-        otherList.tail.getPrev().setNext(n);
-        otherList.head.getNext().setPrev(a);
-
+        Node h = otherList.head.getNext();
+        Node t = otherList.tail.getPrev();
+        h.setPrev(a);
+        t.setNext(n);
+        a.setNext(h);
+        n.setPrev(t);
         nelems += otherList.size();
 
     }

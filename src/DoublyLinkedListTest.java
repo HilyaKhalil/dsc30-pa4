@@ -1,5 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
+import sun.tools.tree.DoubleExpression;
+
 import static org.junit.Assert.*;
 
 /**
@@ -12,7 +14,7 @@ import static org.junit.Assert.*;
 public class DoublyLinkedListTest {
     @SuppressWarnings({"WeakerAccess", "RedundantSuppression"})
     private DoublyLinkedList<Integer> firstList;
-    private DoublyLinkedList<Integer> secondList;
+    private DoublyLinkedList emptyList;
     private DoublyLinkedList<String> thirdList;
     private DoublyLinkedList<String> fourthList;
 
@@ -20,7 +22,7 @@ public class DoublyLinkedListTest {
     public void setUp() throws Exception {
         firstList = new DoublyLinkedList<>();
         firstList.add(1); firstList.add(2); firstList.add(3);
-        secondList = new DoublyLinkedList<>();
+        emptyList = new DoublyLinkedList<>();
         thirdList = new DoublyLinkedList<>();
         thirdList.add("A"); thirdList.add("B"); thirdList.add("C");
         fourthList = new DoublyLinkedList<>();
@@ -29,10 +31,10 @@ public class DoublyLinkedListTest {
 
     @Test
     public void add() {
-        assertTrue("Adding 4 returns true", secondList.add(4));
-        assertEquals("4 is the first item in the list", (Integer) 4, secondList.get(0));
-        assertTrue("Adding 5 returns true", secondList.add(5));
-        assertEquals("5 is the second item in the list", (Integer) 5, secondList.get(1));
+        assertTrue("Adding 4 returns true", emptyList.add(4));
+        assertEquals("4 is the first item in the list", (Integer) 4, emptyList.get(0));
+        assertTrue("Adding 5 returns true", emptyList.add(5));
+        assertEquals("5 is the second item in the list", (Integer) 5, emptyList.get(1));
     }
 
     // Tests that a null pointer exception
@@ -57,11 +59,11 @@ public class DoublyLinkedListTest {
     // Tests that an IndexOutOfBoundsException is thrown when adding at an invalid index
     @Test(expected = IndexOutOfBoundsException.class)
     public void testIndexOutOfBoundsInAddAtIndex() {
-        secondList.add(1);
+        emptyList.add(1);
         // No exception
-        secondList.add(80);
+        emptyList.add(80);
         // No exception
-        secondList.add(5, 6);
+        emptyList.add(5, 6);
         // Exception thrown
     }
 
@@ -70,7 +72,7 @@ public class DoublyLinkedListTest {
     public void testNullPointerExceptionInAddAtIndex() {
         firstList.add(2, 8);
         // No exception
-        secondList.add(0, null);
+        emptyList.add(0, null);
         // Exception thrown
         firstList.add(2, null);
         // Exception thrown
@@ -81,15 +83,15 @@ public class DoublyLinkedListTest {
         assertEquals("listA has 3 elements", 3, firstList.size());
         firstList.clear();
         assertEquals("listA has 0 elements", 0, firstList.size());
-        secondList.clear();
-        assertEquals("secondList has 0 elements", 0, secondList.size());
+        emptyList.clear();
+        assertEquals("secondList has 0 elements", 0, emptyList.size());
 
     }
 
     @Test
     public void contains() {
         assertTrue(firstList.contains(2));
-        assertFalse(secondList.contains(1));
+        assertFalse(emptyList.contains(1));
         assertFalse(firstList.contains(6));
     }
 
@@ -97,7 +99,7 @@ public class DoublyLinkedListTest {
     public void testNullPointerExceptionInContains() {
         assertTrue(firstList.contains(2));
         // No exception
-        assertFalse(secondList.contains(1));
+        assertFalse(emptyList.contains(1));
         // No exception
         assertFalse(firstList.contains(null));
         // Exception thrown
@@ -123,9 +125,9 @@ public class DoublyLinkedListTest {
     @Test
     public void isEmpty() {
         assertFalse(firstList.isEmpty());
-        assertTrue(secondList.isEmpty());
-        secondList.add(8);
-        assertFalse(secondList.isEmpty());
+        assertTrue(emptyList.isEmpty());
+        emptyList.add(8);
+        assertFalse(emptyList.isEmpty());
     }
 
     @Test
@@ -183,23 +185,50 @@ public class DoublyLinkedListTest {
     @Test
     public void size() {
         assertEquals(3, firstList.size());
-        assertEquals(0, secondList.size());
-        assertTrue(secondList.add(2));
-        assertEquals(1, secondList.size());
+        assertEquals(0, emptyList.size());
+        assertTrue(emptyList.add(2));
+        assertEquals(1, emptyList.size());
     }
 
     @Test
-    public void splice() {
+    public void spliceMid() {
         thirdList.splice(0, fourthList);
         assertEquals("D", thirdList.get(0));
         assertEquals("A", thirdList.get(3));
         thirdList = new DoublyLinkedList<>();
         thirdList.add("A"); thirdList.add("B"); thirdList.add("C");
-        fourthList.splice(2, thirdList);
+        fourthList.splice(3, thirdList);
+        assertEquals("C", fourthList.get(5));
+        assertEquals("A", fourthList.get(3));
+
+    }
+
+    @Test
+    public void spliceEnd() {
+        thirdList.splice(3, fourthList);
+        assertEquals("F", thirdList.get(5));
+        assertEquals("D", thirdList.get(3));
+
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void testIndexOutOfBoundsExceptionInSplice() {
+        thirdList.splice(4, fourthList);
     }
 
     @Test
     public void match() {
-        // TODO
+
+        DoublyLinkedList<String> thirdList2 = new DoublyLinkedList<>();
+        thirdList2.add("A"); thirdList2.add("B"); thirdList2.add("C");
+        thirdList.splice(3, thirdList2);
+        DoublyLinkedList<String> subSeq = new DoublyLinkedList<>();
+        subSeq.add("A"); subSeq.add("B"); subSeq.add("C");
+        int[] indices = {0, 3};
+        int[] matchIndices = thirdList.match(subSeq);
+        assertEquals(indices[0], matchIndices[0]);
+        assertEquals(indices[1], matchIndices[1]);
+        assertEquals(2, matchIndices.length);
+
     }
 }
