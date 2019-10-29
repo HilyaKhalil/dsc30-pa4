@@ -32,6 +32,7 @@ public class CRISPR {
      */
     public static void main(String[] args) {
         /*Should print out ACATATA (unchanged)*/
+
         System.out.println(spliceDNA(simpleGenome, overlappingGuide, splicedGene));
     }
 
@@ -44,14 +45,35 @@ public class CRISPR {
      * @return modified genome
      */
     public static String spliceDNA(String genomeSequence, String guideSequence, String splicedSequence) {
+
         DoublyLinkedList<Character> genome = new DoublyLinkedList<>();
         DoublyLinkedList<Character> guideRNA = new DoublyLinkedList<>();
 
         populateFromDNA(genome, genomeSequence);
         populateDNAFromRNA(guideRNA, guideSequence);
 
-        //TODO: Implement a splicing algorithm with will add the splicedSequence where appropriate to genome
+        populateFromDNA(genome, genomeSequence);
+        populateDNAFromRNA(guideRNA, guideSequence);
 
+
+        int[] multInx = genome.match(guideRNA);
+        boolean overlap = false;
+
+        for (int i = 0; i < multInx.length - 1; i++) {
+            overlap = multInx[i+1] - multInx[i] < guideRNA.size();
+        }
+        if (!overlap) {
+            for (int i = 0; i < multInx.length; i++) {
+                DoublyLinkedList<Character> splicedList = new DoublyLinkedList<>();
+                populateFromDNA(splicedList, splicedSequence);
+                int index = multInx[i] + guideRNA.size();
+                for (int j = i; j < multInx.length; j++) {
+                    multInx[j] += splicedList.size();
+                }
+                genome.splice(index, splicedList);
+            }
+        }
+        
         return transcribeGeneticCode(genome);
     }
 
@@ -61,7 +83,12 @@ public class CRISPR {
      * @param dnaString DNA string encoding
      */
     public static void populateFromDNA(DoublyLinkedList<Character> dnaList, String dnaString) {
-        //TODO: Populate dnaList with the characters in s
+
+        char[] dnaChars = dnaString.toCharArray();
+        for (char c : dnaChars) {
+            dnaList.add((Character) c);
+        }
+
     }
 
     /**
@@ -72,8 +99,29 @@ public class CRISPR {
      * @param rnaString RNA string encoding
      */
     public static void populateDNAFromRNA(DoublyLinkedList<Character> dnaList, String rnaString) {
-        //TODO: Populate dnaList with the DNA representation of the RNA Sequence
-    }
+            char[] rnaChars = rnaString.toCharArray();
+            for (char c : rnaChars) {
+                switch (c){
+                    case 'A': {
+                        dnaList.add((Character) 'T');
+                        break;
+                    }
+                    case 'U': {
+                        dnaList.add((Character) 'A');
+                        break;
+                    }
+                    case 'C': {
+                        dnaList.add((Character) 'G');
+                        break;
+                    }
+                    case 'G': {
+                        dnaList.add((Character) 'C');
+                        break;
+                    }
+                }
+
+            }
+        }
 
     /**
      * Recreate the original base sequence that was loaded into the list

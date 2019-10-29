@@ -45,7 +45,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             data = element;
             next = nextNode;
             prev = prevNode;
-            
+
         }
 
         /**
@@ -164,7 +164,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      * Adds an element to a certain index in the list, shifting exist elements
      * create room. Does not accept null values.
      *
-     * TODO: Javadoc comments
+     * Appends a node containing the specified data to the end of the list.
      */
     @Override
     public void add(int index, T element)
@@ -202,7 +202,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine if the list contains the data element anywhere in the list.
      *
-     * TODO: Javadoc comments
+     * Checks if list contains a specified element at least once.
      */
     @Override
     public boolean contains(Object element) {
@@ -230,7 +230,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Retrieves the element stored with a given index on the list.
      *
-     * TODO: Javadoc comments
+     * Access the data contained in the node at the specified index.
      */
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
@@ -245,7 +245,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Helper method to get the Nth node in our list
      *
-     * TODO: Javadoc comments
+     * A helper method for accessing the node in the specified index of the list.
      */
     private Node getNth(int index) {
 
@@ -259,7 +259,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine if the list empty
      *
-     * TODO: javadoc comments
+     * Returns true if the list contains no elements, false otherwise.
      */
     @Override
     public boolean isEmpty() {
@@ -270,7 +270,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Remove the element from position index in the list
      *
-     * TODO: javadoc comments
+     * Removes the element at the specified index from the list and return the data it contained.
      */
     @Override
     public T remove(int index) throws IndexOutOfBoundsException {
@@ -294,7 +294,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Set the value of an element at a certain index in the list.
      *
-     * TODO: javadoc comments
+     * Alters data stored in the node at the specified index and returns the data previously at the specified position.
      */
     @Override
     public T set(int index, T element)
@@ -316,7 +316,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Retrieves the amount of elements that are currently on the list.
      *
-     * TODO: javadoc comments
+     * Return the number of elements stored in the list.
      */
     @Override
     public int size() {
@@ -326,7 +326,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Inserts another linked list of the same type into this one
      *
-     * TODO: javadoc comments
+     * Splice otherList into the current list at the specified index.
      */
     public void splice(int index, DoublyLinkedList<T> otherList) throws IndexOutOfBoundsException {
 
@@ -352,7 +352,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine the starting indices that match the subSequence
      *
-     * TODO: javadoc comments
+     * Determine the starting indices for all match locations. These indices can result in overlapping subsequences.
      */
     public int[] match(DoublyLinkedList<T> subsequence) {
 
